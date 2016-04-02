@@ -28,8 +28,7 @@ public class UnityMainThreadDispatcher : MonoBehaviour {
 	private readonly static Queue<Action> _executionQueue = new Queue<Action>();
 
 	public void Update() {
-		while (_executionQueue.Count > 0)
-		{
+		while (_executionQueue.Count > 0) {
 			_executionQueue.Dequeue().Invoke();
 		}
 	}
