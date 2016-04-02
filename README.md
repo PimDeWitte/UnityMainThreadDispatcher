@@ -10,6 +10,7 @@ No dependencies needed other than Unity. This script was created in Unity 5.3, a
 1. Download the UnityMainThreadDispatcher prefab and add it to your scene. 
 2. Download the UnityMainThreadDispatcher.cs script and add it to your prefab
 3. You can now dispatch objects to the main thread in Unity.
+
 ###Usage
 ```C#
 	public IEnumerator ThisWillBeExecutedOnTheMainThread() {
