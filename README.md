@@ -2,7 +2,8 @@
 
 A thread-safe way of dispatching IEnumerator functions to the main thread in unity. Useful for calling UI functions and other actions that Unity limits to the main thread from different threads. 
 ### Version
-0.1 - Note that this has not yet been tested in production and has been developed for a game that is still in progress. 
+0.1 - Tested in a beta for a mobile game, no issues found so far. Recommended testing necessary for a production release!
+
 ### Installation
 
 No dependencies needed other than Unity. This script was created in Unity 5.3, and has been tested in 5.3. 
