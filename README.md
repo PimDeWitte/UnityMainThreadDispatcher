@@ -22,7 +22,11 @@ No dependencies needed other than Unity. This script was created in Unity 5.3, a
 		UnityMainThreadDispatcher.Instance().Enqueue(ThisWillBeExecutedOnTheMainThread()); 
 	}
 ```
+OR
 
+```C#
+	UnityMainThreadDispatcher.Instance().Enqueue(() => Debug.Log ("This is executed from the main thread"));
+```
 ### Development
 
 Want to contribute? Great! If you find a bug or want to make improvements, simply fork the repo and make a pull request with your changes on your own fork.
