@@ -46,6 +46,20 @@ public class UnityMainThreadDispatcher : MonoBehaviour {
 			});
 		}
 	}
+	
+        /// <summary>
+        /// Locks the queue and adds the Action to the queue
+	/// </summary>
+	/// <param name="action">function that will be executed from the main thread.</param>
+	public void Enqueue(Action action)
+	{
+		Enqueue(ActionWrapper(action));
+	}
+	IEnumerator ActionWrapper(Action a)
+	{
+		a();
+		yield return null;
+	}
 
 
 	private static UnityMainThreadDispatcher _instance = null;
