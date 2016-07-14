@@ -80,9 +80,7 @@ public class UnityMainThreadDispatcher : MonoBehaviour {
 		if (_instance == null) {
 			_instance = this;
 			DontDestroyOnLoad(this.gameObject);
-		} else if(_instance != this) {
-			Destroy(this.gameObject);
-		}
+		} 
 	}
 
 	void OnDestroy() {
