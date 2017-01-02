@@ -6,7 +6,7 @@ A thread-safe way of dispatching IEnumerator functions to the main thread in uni
 
 ### Installation
 
-No dependencies needed other than Unity. This script was created in Unity 5.3, and has been tested in 5.3. 
+No dependencies needed other than Unity. This script was created in Unity 5.3, and has been tested in 5.3, 5.4, and 5.5.
 
 1. Download the UnityMainThreadDispatcher prefab and add it to your scene, or simple create an empty GameObject, call it UnityMainThreadDispatcher.
 2. Download the UnityMainThreadDispatcher.cs script and add it to your prefab
