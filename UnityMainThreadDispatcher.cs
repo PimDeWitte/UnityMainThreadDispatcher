@@ -1,5 +1,5 @@
 ﻿/*
-Copyright 2015 Get Wrecked B.V. All Rights Reserved.
+Copyright 2015 Pim de Witte All Rights Reserved.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -19,6 +19,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System;
 
+/// Author: Pim de Witte (pimdewitte.com) and contributors
 /// <summary>
 /// A thread-safe class which holds a queue with actions to execute on the next Update() method. It can be used to make calls to the main thread for
 /// things such as UI Manipulation in Unity. It was developed for use in combination with the Firebase Unity plugin, which uses separate threads for event handling
