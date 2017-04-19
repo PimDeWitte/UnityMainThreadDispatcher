@@ -27,7 +27,7 @@ using UnityEditor.Callbacks;
 /// </summary>
 public class UnityMainThreadDispatcher : MonoBehaviour {
 
-	private static readonly Queue<Action> _executionQueue = new Queue<Action>();
+	private static readonly Queue<IEnumerator> _executionQueue = new Queue<IEnumerator>();
 	private static UnityMainThreadDispatcher _instance;
 
 	/// <summary>
@@ -36,9 +36,7 @@ public class UnityMainThreadDispatcher : MonoBehaviour {
 	/// <param name="action">IEnumerator function that will be executed from the main thread.</param>
 	public static void Enqueue(IEnumerator action) {
 		lock (_executionQueue) {
-			_executionQueue.Enqueue (() => {
-				                         _instance.StartCoroutine (action);
-			                         });
+			_executionQueue.Enqueue(action);
 		}
 	}
 
@@ -73,7 +71,7 @@ public class UnityMainThreadDispatcher : MonoBehaviour {
 	private void Update() {
 		lock(_executionQueue) {
 			while (_executionQueue.Count > 0) {
-				_executionQueue.Dequeue().Invoke();
+				StartCoroutine(_executionQueue.Dequeue());
 			}
 		}
 	}
