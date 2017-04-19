@@ -6,11 +6,11 @@ A thread-safe way of dispatching IEnumerator functions to the main thread in uni
 
 ### Installation
 
-No dependencies needed other than Unity. This script was created in Unity 5.3, and has been tested in 5.3, 5.4, and 5.5.
+No dependencies needed other than Unity. This script was created in Unity 5.3, and has been tested in 5.3 through 5.6.
 
-1. Download the UnityMainThreadDispatcher prefab and add it to your scene, or simple create an empty GameObject, call it UnityMainThreadDispatcher.
-2. Download the UnityMainThreadDispatcher.cs script and add it to your prefab
-3. You can now dispatch objects to the main thread in Unity.
+Just download the UnityMainThreadDispatcher.cs script, and you're done. 
+The script adds a singleton runner to the scene on it's own when you enter play mode, so you don't need to do anything to start using the static methods from the script.
+
 
 ###Usage
 ```C#
@@ -19,13 +19,13 @@ No dependencies needed other than Unity. This script was created in Unity 5.3, a
 		yield return null;
 	}
 	public void ExampleMainThreadCall() {
-		UnityMainThreadDispatcher.Instance().Enqueue(ThisWillBeExecutedOnTheMainThread()); 
+		UnityMainThreadDispatcher.Enqueue(ThisWillBeExecutedOnTheMainThread()); 
 	}
 ```
 OR
 
 ```C#
-	UnityMainThreadDispatcher.Instance().Enqueue(() => Debug.Log ("This is executed from the main thread"));
+	UnityMainThreadDispatcher.Enqueue(() => Debug.Log ("This is executed from the main thread"));
 ```
 ### Development
 
