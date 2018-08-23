@@ -1,6 +1,7 @@
 # UnityMainThreadDispatcher
 
-A thread-safe way of dispatching IEnumerator functions to the main thread in unity. Useful for calling UI functions and other actions that Unity limits to the main thread from different threads. 
+A thread-safe way of dispatching IEnumerator functions to the main thread in unity. Useful for calling UI functions and other actions that Unity limits to the main thread from different threads. Initially written for Firebase Unity but now used across the board!
+
 ### Version
 1.0 - Tested and functional in one or more production mobile games (including https://get-wrecked.com)
 
