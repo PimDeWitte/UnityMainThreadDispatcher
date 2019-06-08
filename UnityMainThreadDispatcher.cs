@@ -56,6 +56,32 @@ public class UnityMainThreadDispatcher : MonoBehaviour {
 	{
 		Enqueue(ActionWrapper(action));
 	}
+	
+	/// <summary>
+	/// Locks the queue and adds the Action to the queue, returning a Task which is completed when the action completes
+	/// </summary>
+	/// <param name="action">function that will be executed from the main thread.</param>
+	/// <returns>A Task that can be awaited until the action completes</returns>
+	public Task EnqueueAsync(Action action)
+	{
+		var tcs = new TaskCompletionSource<bool>();
+
+		void WrappedAction() {
+			try 
+			{
+				action();
+				tcs.TrySetResult(true);
+			} catch (Exception ex) 
+			{
+				tcs.TrySetException(ex);
+			}
+		}
+
+		Enqueue(ActionWrapper(WrappedAction));
+		return tcs.Task;
+	}
+
+	
 	IEnumerator ActionWrapper(Action a)
 	{
 		a();
