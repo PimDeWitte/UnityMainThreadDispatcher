@@ -28,6 +28,13 @@ OR
 ```C#
 	UnityMainThreadDispatcher.Instance().Enqueue(() => Debug.Log ("This is executed from the main thread"));
 ```
+
+OR
+
+```C#
+	var result = UnityMainThreadDispatcher.Dispatch(() => Resource.Load<TextAsset>("test").text);
+```
+
 ### Development
 
 Want to contribute? Great! If you find a bug or want to make improvements, simply fork the repo and make a pull request with your changes on your own fork.
