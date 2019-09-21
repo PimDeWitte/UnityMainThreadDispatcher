@@ -32,6 +32,12 @@ OR
 OR
 
 ```C#
+	UnityMainThreadDispatcher.Dispatch(() => Debug.Log ("This is executed from the main thread"));
+```
+
+OR
+
+```C#
 	var result = UnityMainThreadDispatcher.Dispatch(() => Resource.Load<TextAsset>("test").text);
 ```
 

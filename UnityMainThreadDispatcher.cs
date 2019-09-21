@@ -136,4 +136,20 @@ public class UnityMainThreadDispatcher : MonoBehaviour
 
         return obj;
     }
+
+    /// <summary>
+    /// Executes the function on the main thread and returns the result to the caller.
+    /// </summary>
+    /// <param name="func">The function that will be executed on the main thread.</param>
+    public static void Dispatch(Action func)
+    {
+        if (Thread.CurrentThread == _mainThread)
+        {
+            func();
+        }
+        else
+        {
+            Instance().Enqueue(func);
+        }
+    }
 }
