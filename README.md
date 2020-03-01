@@ -32,6 +32,8 @@ OR
 
 Want to contribute? Great! If you find a bug or want to make improvements, simply fork the repo and make a pull request with your changes on your own fork.
 
+Also - I'm looking for additional maintainers who are still actively using this in production as I now run a startup and am not actively doing engineering work anymore. 
+
 ### Author
 @PimDeWitte
 
