@@ -30,12 +30,18 @@ public class UnityMainThreadDispatcher : MonoBehaviour {
 	private static readonly Queue<Action> _executionQueue = new Queue<Action>();
 
 	public void Update() {
-		lock(_executionQueue) {
-			while (_executionQueue.Count > 0) {
-				_executionQueue.Dequeue().Invoke();
-			}
-		}
-	}
+        // Make local copy to avoid holding the lock while the actions execute.
+        Queue<Action> queueCopy;
+		lock (_executionQueue)
+		{
+			queueCopy = new Queue<Action>(_executionQueue);
+			_executionQueue.Clear();
+        }
+        while (queueCopy.Count > 0)
+        {
+			queueCopy.Dequeue().Invoke();
+        }
+    }
 
 	/// <summary>
 	/// Locks the queue and adds the IEnumerator to the queue
