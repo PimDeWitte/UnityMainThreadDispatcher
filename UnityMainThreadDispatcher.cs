@@ -28,7 +28,7 @@ using System.Threading.Tasks;
 /// </summary>
 public class UnityMainThreadDispatcher : MonoBehaviour
 {
-    private static readonly Queue<Action> ExecutionQueue = new Queue<Action>();
+    private static readonly Queue<Action> _executionQueue = new Queue<Action>();
     private static UnityMainThreadDispatcher _instance = null;
     private static Thread _mainThread = null;
 
@@ -97,9 +97,9 @@ public class UnityMainThreadDispatcher : MonoBehaviour
     /// <param name="action">IEnumerator function that will be executed from the main thread.</param>
     public void Enqueue(IEnumerator action)
     {
-        lock (ExecutionQueue)
+        lock (_executionQueue)
         {
-            ExecutionQueue.Enqueue(() =>
+            _executionQueue.Enqueue(() =>
             {
                 StartCoroutine(action);
             });
