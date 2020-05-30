@@ -1,5 +1,5 @@
 ﻿/*
-Copyright 2015 Pim de Witte All Rights Reserved.
+Copyright 2015-2020 Pim de Witte and Rene Windegger All Rights Reserved.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -21,7 +21,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-/// Author: Pim de Witte (pimdewitte.com) and contributors, https://github.com/PimDeWitte/UnityMainThreadDispatcher
+/// Author: Pim de Witte (pimdewitte.com), Rene Windegger (https://www.windegger.wtf), and contributors, https://github.com/rwindegger/UnityMainThreadDispatcher
 /// <summary>
 /// A thread-safe class which holds a queue with actions to execute on the next Update() method. It can be used to make calls to the main thread for
 /// things such as UI Manipulation in Unity. It was developed for use in combination with the Firebase Unity plugin, which uses separate threads for event handling
@@ -85,12 +85,6 @@ public class UnityMainThreadDispatcher : MonoBehaviour
         return _instance;
     }
 
-    private IEnumerator ActionWrapper(Action a)
-    {
-        a();
-        yield return null;
-    }
-
     /// <summary>
     /// Locks the queue and adds the IEnumerator to the queue
     /// </summary>
@@ -109,16 +103,22 @@ public class UnityMainThreadDispatcher : MonoBehaviour
     /// <summary>
     /// Locks the queue and adds the Action to the queue
     /// </summary>
-    /// <param name="action">function that will be executed from the main thread.</param>
+    /// <param name="action">Function that will be executed from the main thread.</param>
     public void Enqueue(Action action)
     {
+        IEnumerator ActionWrapper(Action a)
+        {
+            a();
+            yield return null;
+        }
+
         Enqueue(ActionWrapper(action));
     }
 
     /// <summary>
     /// Locks the queue and adds the Action to the queue, returning a Task which is completed when the action completes
     /// </summary>
-    /// <param name="action">function that will be executed from the main thread.</param>
+    /// <param name="action">Function that will be executed from the main thread.</param>
     /// <returns>A Task that can be awaited until the action completes</returns>
     public Task EnqueueAsync(Action action)
     {
@@ -137,7 +137,7 @@ public class UnityMainThreadDispatcher : MonoBehaviour
             }
         }
 
-        Enqueue(ActionWrapper(WrappedAction));
+        Enqueue(WrappedAction);
         return tcs.Task;
     }
 
@@ -182,5 +182,72 @@ public class UnityMainThreadDispatcher : MonoBehaviour
         {
             Instance().Enqueue(func);
         }
+    }
+
+    /// <summary>
+    /// Locks the queue and adds the Action to the queue, returning a Task which is completed when the action completes
+    /// </summary>
+    /// <param name="func">Function that will be executed from the main thread.</param>
+    /// <returns>A Task that can be awaited until the action completes</returns>
+    public static Task<T> DispatchAsync<T>(Func<T> func)
+    {
+        var tcs = new TaskCompletionSource<T>();
+
+        void WrappedAction()
+        {
+            try
+            {
+                tcs.TrySetResult(func());
+            }
+            catch (Exception ex)
+            {
+                tcs.TrySetException(ex);
+            }
+        }
+
+        if (Thread.CurrentThread == _mainThread)
+        {
+            WrappedAction();
+        }
+        else
+        {
+            Instance().Enqueue(WrappedAction);
+        }
+
+        return tcs.Task;
+    }
+
+    /// <summary>
+    /// Locks the queue and adds the Action to the queue, returning a Task which is completed when the action completes
+    /// </summary>
+    /// <param name="func">Function that will be executed from the main thread.</param>
+    /// <returns>A Task that can be awaited until the action completes</returns>
+    public static Task DispatchAsync(Action func)
+    {
+        var tcs = new TaskCompletionSource<bool>();
+
+        void WrappedAction()
+        {
+            try
+            {
+                func();
+                tcs.TrySetResult(true);
+            }
+            catch (Exception ex)
+            {
+                tcs.TrySetException(ex);
+            }
+        }
+
+        if (Thread.CurrentThread == _mainThread)
+        {
+            WrappedAction();
+        }
+        else
+        {
+            Instance().Enqueue(WrappedAction);
+        }
+
+        return tcs.Task;
     }
 }
