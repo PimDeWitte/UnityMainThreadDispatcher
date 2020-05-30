@@ -43,12 +43,16 @@ public class UnityMainThreadDispatcher : MonoBehaviour
 
     void Update()
     {
-        lock (ExecutionQueue)
+        // Make local copy to avoid holding the lock while the actions execute.
+        Queue<Action> queueCopy;
+        lock (_executionQueue)
         {
-            while (ExecutionQueue.Count > 0)
-            {
-                ExecutionQueue.Dequeue().Invoke();
-            }
+            queueCopy = new Queue<Action>(_executionQueue);
+            _executionQueue.Clear();
+        }
+        while (queueCopy.Count > 0)
+        {
+            queueCopy.Dequeue().Invoke();
         }
     }
 
