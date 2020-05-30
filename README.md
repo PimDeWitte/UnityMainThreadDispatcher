@@ -4,6 +4,7 @@ A thread-safe way of dispatching IEnumerator functions to the main thread in uni
 
 ## Version
 1.0 - Tested and functional in one or more production applications, including those from major companies.
+
 1.1 - Added a static interface for easier useage. 
 
 ## Installation
@@ -56,11 +57,5 @@ Also - I'm looking for additional maintainers who are still actively using this 
 
 ## Author
 @PimDeWitte
+
 [@rwindegger](https://www.windegger.wtf "Windegger Rene")
-
-
-
-
-
-
- 
