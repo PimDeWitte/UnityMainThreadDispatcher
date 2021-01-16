@@ -109,13 +109,15 @@ public class UnityMainThreadDispatcher : MonoBehaviour {
 			_instance = this;
 			DontDestroyOnLoad(this.gameObject);
 		}
-		else if(this != _instance) //Preserves only the first object created.
+		else if(this != _instance) {//Preserves only the first object created.
         		Destroy(this);
+		}
 	}
 
 	void OnDestroy() {
-		 if(this == _instance) // If a duplicate object is destroyed, it does not free the first instance created.
+		 if(this == _instance) {// If a duplicate object is destroyed, it does not free the first instance created.
 			_instance = null;
+		 }
 	}
 
 
