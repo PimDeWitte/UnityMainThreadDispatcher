@@ -49,16 +49,26 @@ public class UnityMainThreadDispatcher : MonoBehaviour {
 		}
 	}
 
-        /// <summary>
-        /// Locks the queue and adds the Action to the queue
+	/// <summary>
+    /// Locks the queue and adds the Action to the queue
 	/// </summary>
 	/// <param name="action">function that will be executed from the main thread.</param>
 	public void Enqueue(Action action)
 	{
 		Enqueue(ActionWrapper(action));
 	}
-	
-	/// <summary>
+        
+    /// <summary>
+    /// Locks the queue and adds the Action (with a parameter T) to the queue
+    /// </summary>
+    /// <param name="action">function (requires parameter of type T) that will be executed from the main thread.</param>
+    /// <param name="arg">parameter of type T to pass to action.</param>
+    public void Enqueue<T>(Action<T> action, T arg)
+    {
+        Enqueue(ActionWrapper(action, arg));
+    }
+
+    /// <summary>
 	/// Locks the queue and adds the Action to the queue, returning a Task which is completed when the action completes
 	/// </summary>
 	/// <param name="action">function that will be executed from the main thread.</param>
@@ -82,14 +92,42 @@ public class UnityMainThreadDispatcher : MonoBehaviour {
 		return tcs.Task;
 	}
 
+    /// <summary>
+    /// Locks the queue and adds the Action to the queue, returning a Task which is completed when the action completes
+    /// </summary>
+    /// <param name="action">function that will be executed from the main thread.</param>
+    /// <returns>A Task that can be awaited until the action completes</returns>
+    public Task EnqueueAsync<T>(Action<T> action, T arg)
+    {
+	    var tcs = new TaskCompletionSource<bool>();
+
+	    void WrappedAction() {
+		    try 
+		    {
+			    action(arg);
+			    tcs.TrySetResult(true);
+		    } catch (Exception ex) 
+		    {
+			    tcs.TrySetException(ex);
+		    }
+	    }
+
+	    Enqueue(ActionWrapper(WrappedAction));
+	    return tcs.Task;
+    }
 	
 	IEnumerator ActionWrapper(Action a)
 	{
 		a();
 		yield return null;
 	}
-
-
+	
+	IEnumerator ActionWrapper<T>(Action<T> action, T arg)
+	{
+		action(arg);
+		yield return null;
+	}
+	
 	private static UnityMainThreadDispatcher _instance = null;
 
 	public static bool Exists() {
