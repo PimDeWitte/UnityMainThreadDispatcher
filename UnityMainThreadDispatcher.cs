@@ -18,6 +18,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 
 /// Author: Pim de Witte (pimdewitte.com) and contributors, https://github.com/PimDeWitte/UnityMainThreadDispatcher
@@ -28,6 +29,7 @@ using System.Threading.Tasks;
 public class UnityMainThreadDispatcher : MonoBehaviour {
 
 	private static readonly Queue<Action> _executionQueue = new Queue<Action>();
+	private static SemaphoreSlim _executionQueueLock = new SemaphoreSlim(1, 1);
 
 	public void Update() {
 		lock(_executionQueue) {
@@ -42,10 +44,14 @@ public class UnityMainThreadDispatcher : MonoBehaviour {
 	/// </summary>
 	/// <param name="action">IEnumerator function that will be executed from the main thread.</param>
 	public void Enqueue(IEnumerator action) {
-		lock (_executionQueue) {
+		_executionQueueLock.Wait();
+		try {
 			_executionQueue.Enqueue (() => {
 				StartCoroutine (action);
 			});
+		}
+		finally {
+			_executionQueueLock.Release();
 		}
 	}
 
