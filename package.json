@@ -1,0 +1,13 @@
+{
+    "name": "com.pimdewitte.unitymainthreaddispatcher",
+    "version": "1.0.0",
+    "displayName": "UnityMainThreadDispatcher",
+    "description": "A thread-safe way of dispatching IEnumerator functions to the main thread in unity. Useful for calling UI functions and other actions that Unity limits to the main thread from different threads. Initially written for Firebase Unity but now used across the board!",
+    "documentation": "https://github.com/PimDeWitte/UnityMainThreadDispatcher#readme",
+    "changelog": "https://github.com/PimDeWitte/UnityMainThreadDispatcher/commits/master",
+    "license": "https://github.com/PimDeWitte/UnityMainThreadDispatcher/blob/master/LICENSE",
+    "author": {
+        "name": "Pim de Witte",
+        "url": "https://github.com/PimDeWitte"
+    }
+}
