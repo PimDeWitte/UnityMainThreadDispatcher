@@ -1,3 +1,14 @@
 {
-	"name": "PimDeWitte.UnityMainThreadDispatcher"
+	"name": "PimDeWitte.UnityMainThreadDispatcher",
+	"rootNamespace": "PimDeWitte.UnityMainThreadDispatcher",
+	"references": [],
+    	"includePlatforms": [],
+    	"excludePlatforms": [],
+    	"allowUnsafeCode": false,
+    	"overrideReferences": false,
+    	"precompiledReferences": [],
+    	"autoReferenced": true,
+    	"defineConstraints": [],
+    	"versionDefines": [],
+    	"noEngineReferences": false
 }
